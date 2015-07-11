@@ -15,6 +15,8 @@ and super imposing them at 90 degrees.
 
 This script will dynamically create the curves based on user input, and
 play tones corresponding to the notes given.
+
+Thanks to Ella for the idea :)
 """
 
 import Tkinter as tk
