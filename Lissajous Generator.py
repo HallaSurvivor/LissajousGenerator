@@ -51,6 +51,8 @@ class LissajousGenerator(tk.Frame):
         tk.Frame.__init__(self, parent, background="white")
         self.parent = parent
 
+        self.player = pyaudio.PyAudio()
+
         #Define variables
         self.A = tk.DoubleVar()
         self.B = tk.DoubleVar()
@@ -77,6 +79,10 @@ class LissajousGenerator(tk.Frame):
                           'F6': 16.0/5.0, 'F#6': 10.0/3.0, 'G6': 7.0/2.0, 'G#6': 15.0/4.0, 'A6': 4.0,
                           'A#6': 64.0/15.0, 'B6': 32.0/7.0, 'C7': 24.0/5.0, 'C#7': 5.0, 'D7': 16.0/3.0,
                           'D#7': 40.0/7.0, 'E7': 6.0, 'F7': 32.0/5.0, 'F#7': 20.0/3.0, 'G7': 7.0, 'G#7': 15.0/2.0}
+
+        self.fs = 44100
+        self.volume = 0.5
+        self.duration = 5
 
         self.initUI()
 
@@ -259,20 +265,27 @@ class Plot(tk.Frame):
 
         self.canvas.draw()
 
+        self.play_notes()
+
+    def play_notes(self):
+        """
+        Play the selected notes with pyaudio
+
+        Thanks to stackoverflow ivan_onys for the basis of this code
+        """
+
+        sampleA = (np.sin(2*np.pi*np.arange(self.parent.fs*self.parent.duration)*self.parent.a.get()*440/self.parent.fs)).astype(np.float32)
+        sampleB = (np.sin(2*np.pi*np.arange(self.parent.fs*self.parent.duration)*self.parent.b.get()*440/self.parent.fs)).astype(np.float32)
+        stream = self.parent.player.open(format=pyaudio.paFloat32, channels=1, rate=self.parent.fs, output=True)
+
+        to_play = (sampleA + sampleB)/2
+
+        stream.write(self.parent.volume*to_play)
+
+        stream.stop_stream()
+        stream.close()
+
 root = tk.Tk()
 root.geometry("660x800")
 app = LissajousGenerator(root)
 root.mainloop()
-
-# p = pyaudio.PyAudio()
-#
-# samples = (np.sin(2*np.pi*np.arange(fs*duration)*f/fs)).astype(np.float32)
-#
-# stream = p.open(format=pyaudio.paFloat32, channels=1, rate=fs, output=True)
-#
-# stream.write(volume*samples)
-#
-# stream.stop_stream()
-# stream.close()
-#
-# p.terminate()
