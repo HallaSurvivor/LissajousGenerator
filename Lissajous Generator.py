@@ -1,6 +1,12 @@
 """
 Dynamically create Lissajous curves based on user inputs.
 
+Made for python 2.7
+Requires:
+* NumPy
+* MatPlotLib
+* PyAudio
+
 Lissajous curves follow the parametric equations:
 
 X = Asin(at + delta)
