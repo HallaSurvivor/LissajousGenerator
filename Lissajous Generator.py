@@ -20,7 +20,7 @@ play tones corresponding to the notes given.
 import Tkinter as tk
 import numpy as np
 import matplotlib
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import pyaudio
 
@@ -135,36 +135,39 @@ class VariableSliders(tk.Frame):
     """
 
     def __init__(self, parent):
+        """
+        I turned the sliders off for aesthetic reasons. Changing the entry did not update the slider
+        """
         tk.Frame.__init__(self, parent, background="white")
         self.parent = parent
 
         tk.Label(self, text="A amplitude").grid(row=1, column=0)
-        Aslider = tk.Scale(self, from_=0, to=10, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changeA)
-        Aslider.grid(row=1, column=1)
+        # Aslider = tk.Scale(self, from_=0, to=10, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changeA)
+        # Aslider.grid(row=1, column=1)
         Aentry = tk.Entry(self, textvariable=self.parent.A)
         Aentry.grid(row=1, column=2)
 
         tk.Label(self, text="B amplitude").grid(row=2, column=0)
-        Bslider = tk.Scale(self, from_=0, to=10, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changeB)
-        Bslider.grid(row=2, column=1)
+        # Bslider = tk.Scale(self, from_=0, to=10, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changeB)
+        # Bslider.grid(row=2, column=1)
         Bentry = tk.Entry(self, textvariable=self.parent.B)
         Bentry.grid(row=2, column=2)
 
         tk.Label(self, text="A frequency").grid(row=3, column=0)
-        aslider = tk.Scale(self, from_=440, to=1760, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changea)
-        aslider.grid(row=3, column=1)
+        # aslider = tk.Scale(self, from_=440, to=1760, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changea)
+        # aslider.grid(row=3, column=1)
         aentry = tk.Entry(self, textvariable=self.parent.a)
         aentry.grid(row=3, column=2)
 
         tk.Label(self, text="A frequency").grid(row=4, column=0)
-        bslider = tk.Scale(self, from_=440, to=1760, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changeb)
-        bslider.grid(row=4, column=1)
+        # bslider = tk.Scale(self, from_=440, to=1760, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changeb)
+        # bslider.grid(row=4, column=1)
         bentry = tk.Entry(self, textvariable=self.parent.b)
         bentry.grid(row=4, column=2)
 
         tk.Label(self, text="Phase Shift").grid(row=5, column=0)
-        deltaslider = tk.Scale(self, from_=0, to=6.28, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changedelta)
-        deltaslider.grid(row=5, column=1)
+        # deltaslider = tk.Scale(self, from_=0, to=6.28, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changedelta)
+        # deltaslider.grid(row=5, column=1)
         deltaentry = tk.Entry(self, textvariable=self.parent.delta)
         deltaentry.grid(row=5, column=2)
 
@@ -232,16 +235,30 @@ class Plot(tk.Frame):
         #Create plot
         f = Figure(figsize=(5, 5), dpi=100)
         plot = f.add_subplot(111)
-        plot.plot(X, Y)
+        self.graph, = plot.plot(X, Y)
 
-        canvas = FigureCanvasTkAgg(f, self)
-        canvas.show()
-        canvas.get_tk_widget().grid(row=1, column=4, columnspan=7, rowspan=7, padx=40)
+        self.canvas = FigureCanvasTkAgg(f, self)
+        self.canvas.show()
+        self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+        tk.Button(self, text='Refresh Image', command=self.refresh).pack(side=tk.BOTTOM)
 
         self.pack()
 
+    def refresh(self):
+        T = [float(num)/100.0 for num in range(0, 1001)]
+        X = [self.parent.A.get()*np.sin(self.parent.a.get()*t + self.parent.delta.get()) for t in T]
+        Y = [self.parent.B.get()*np.sin(self.parent.b.get()*t) for t in T]
+
+        self.graph.set_data(X, Y)
+        ax = self.canvas.figure.axes[0]
+        ax.set_xlim(min(X), max(X))
+        ax.set_ylim(min(Y), max(Y))
+
+        self.canvas.draw()
+
 root = tk.Tk()
-root.geometry("800x800")
+root.geometry("660x800")
 app = LissajousGenerator(root)
 root.mainloop()
 
