@@ -66,24 +66,12 @@ class LissajousGenerator(tk.Frame):
         self.b = tk.DoubleVar()
         self.delta = tk.DoubleVar()
 
-        self.Astr = tk.StringVar()
-        self.Bstr = tk.StringVar()
-        self.astr = tk.StringVar()
-        self.bstr = tk.StringVar()
-        self.deltastr = tk.StringVar()
-
         #Set variables
         self.A.set(10)
         self.B.set(10)
         self.a.set(3)
         self.b.set(2)
         self.delta.set(0)
-
-        self.Astr.set('10')
-        self.Bstr.set('10')
-        self.astr.set('3')
-        self.bstr.set('2')
-        self.deltastr.set('0')
 
         #Define constants
         self.notes = ['A4', 'A#4', 'B4', 'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4',
@@ -153,31 +141,31 @@ class VariableSliders(tk.Frame):
         tk.Label(self, text="A amplitude").grid(row=1, column=0)
         Aslider = tk.Scale(self, from_=0, to=10, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changeA)
         Aslider.grid(row=1, column=1)
-        Aentry = tk.Entry(self, textvariable=self.parent.Astr)
+        Aentry = tk.Entry(self, textvariable=self.parent.A)
         Aentry.grid(row=1, column=2)
 
         tk.Label(self, text="B amplitude").grid(row=2, column=0)
         Bslider = tk.Scale(self, from_=0, to=10, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changeB)
         Bslider.grid(row=2, column=1)
-        Bentry = tk.Entry(self, textvariable=self.parent.Bstr)
+        Bentry = tk.Entry(self, textvariable=self.parent.B)
         Bentry.grid(row=2, column=2)
 
         tk.Label(self, text="A frequency").grid(row=3, column=0)
         aslider = tk.Scale(self, from_=440, to=1760, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changea)
         aslider.grid(row=3, column=1)
-        aentry = tk.Entry(self, textvariable=self.parent.astr)
+        aentry = tk.Entry(self, textvariable=self.parent.a)
         aentry.grid(row=3, column=2)
 
         tk.Label(self, text="A frequency").grid(row=4, column=0)
         bslider = tk.Scale(self, from_=440, to=1760, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changeb)
         bslider.grid(row=4, column=1)
-        bentry = tk.Entry(self, textvariable=self.parent.bstr)
+        bentry = tk.Entry(self, textvariable=self.parent.b)
         bentry.grid(row=4, column=2)
 
         tk.Label(self, text="Phase Shift").grid(row=5, column=0)
         deltaslider = tk.Scale(self, from_=0, to=6.28, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changedelta)
         deltaslider.grid(row=5, column=1)
-        deltaentry = tk.Entry(self, textvariable=self.parent.deltastr)
+        deltaentry = tk.Entry(self, textvariable=self.parent.delta)
         deltaentry.grid(row=5, column=2)
 
         self.pack()
