@@ -296,6 +296,5 @@ class Plot(tk.Frame):
         stream.close()
 
 root = tk.Tk()
-root.geometry("660x800")
-app = LissajousGenerator(root)
+root.geometry("660x850")
 root.mainloop()
