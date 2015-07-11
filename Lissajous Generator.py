@@ -23,6 +23,8 @@ This script will dynamically create the curves based on user input, and
 play tones corresponding to the notes given.
 
 Thanks to Ella for the idea :)
+
+Made by Christopher Grossack
 """
 
 import Tkinter as tk
