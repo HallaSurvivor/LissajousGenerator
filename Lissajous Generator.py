@@ -150,30 +150,35 @@ class VariableSliders(tk.Frame):
         tk.Frame.__init__(self, parent, background="white")
         self.parent = parent
 
-        Alabel = tk.Label(self, text="A amplitude").grid(row=1, column=0)
-        Aslider = tk.Scale(self, from_=0, to=10, orient=tk.HORIZONTAL,
-                           resolution=0.01, command=self.parent.changeA).grid(row=1, column=1)
-        Aentry = tk.Entry(self, textvariable=self.parent.Astr).grid(row=1, column=2)
+        tk.Label(self, text="A amplitude").grid(row=1, column=0)
+        Aslider = tk.Scale(self, from_=0, to=10, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changeA)
+        Aslider.grid(row=1, column=1)
+        Aentry = tk.Entry(self, textvariable=self.parent.Astr)
+        Aentry.grid(row=1, column=2)
 
-        Blabel = tk.Label(self, text="B amplitude").grid(row=2, column=0)
-        Bslider = tk.Scale(self, from_=0, to=10, orient=tk.HORIZONTAL,
-                           resolution=0.01, command=self.parent.changeB).grid(row=2, column=1)
-        Bentry = tk.Entry(self, textvariable=self.parent.Bstr).grid(row=2, column=2)
+        tk.Label(self, text="B amplitude").grid(row=2, column=0)
+        Bslider = tk.Scale(self, from_=0, to=10, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changeB)
+        Bslider.grid(row=2, column=1)
+        Bentry = tk.Entry(self, textvariable=self.parent.Bstr)
+        Bentry.grid(row=2, column=2)
 
-        alabel = tk.Label(self, text="A frequency").grid(row=3, column=0)
-        aslider = tk.Scale(self, from_=440, to=1760, orient=tk.HORIZONTAL,
-                           resolution=0.01, command=self.parent.changea).grid(row=3, column=1)
-        aentry = tk.Entry(self, textvariable=self.parent.astr).grid(row=3, column=2)
+        tk.Label(self, text="A frequency").grid(row=3, column=0)
+        aslider = tk.Scale(self, from_=440, to=1760, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changea)
+        aslider.grid(row=3, column=1)
+        aentry = tk.Entry(self, textvariable=self.parent.astr)
+        aentry.grid(row=3, column=2)
 
-        blabel = tk.Label(self, text="A frequency").grid(row=4, column=0)
-        bslider = tk.Scale(self, from_=440, to=1760, orient=tk.HORIZONTAL,
-                           resolution=0.01, command=self.parent.changeb).grid(row=4, column=1)
-        bentry = tk.Entry(self, textvariable=self.parent.bstr).grid(row=4, column=2)
+        tk.Label(self, text="A frequency").grid(row=4, column=0)
+        bslider = tk.Scale(self, from_=440, to=1760, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changeb)
+        bslider.grid(row=4, column=1)
+        bentry = tk.Entry(self, textvariable=self.parent.bstr)
+        bentry.grid(row=4, column=2)
 
-        deltalabel = tk.Label(self, text="Phase Shift").grid(row=5, column=0)
-        deltaslider = tk.Scale(self, from_=0, to=6.28, orient=tk.HORIZONTAL,
-                               resolution=0.01, command=self.parent.changedelta).grid(row=5, column=1)
-        deltaentry = tk.Entry(self, textvariable=self.parent.deltastr).grid(row=5, column=2)
+        tk.Label(self, text="Phase Shift").grid(row=5, column=0)
+        deltaslider = tk.Scale(self, from_=0, to=6.28, orient=tk.HORIZONTAL, resolution=0.01, command=self.parent.changedelta)
+        deltaslider.grid(row=5, column=1)
+        deltaentry = tk.Entry(self, textvariable=self.parent.deltastr)
+        deltaentry.grid(row=5, column=2)
 
         self.pack()
 
@@ -189,18 +194,22 @@ class NoteVariables(tk.Frame):
 
         note1frame = tk.Frame(self)
 
-        note1label = tk.Label(note1frame, text="Note 1").pack(side=tk.TOP)
+        tk.Label(note1frame, text="Note 1").pack(side=tk.TOP)
         note1 = tk.Listbox(note1frame)
         for note in self.parent.notes:
             note1.insert(tk.END, note)
         note1.bind("<<ListboxSelect>>", self.parent.choose_note1)
         note1.pack(side=tk.LEFT)
-        note1scroll = tk.Scrollbar(note1frame, orient=tk.VERTICAL).pack(side=tk.RIGHT, fill=tk.Y)
+        note1scroll = tk.Scrollbar(note1frame, orient=tk.VERTICAL)
+        note1scroll.pack(side=tk.RIGHT, fill=tk.Y)
+
+        note1scroll.configure(command=note1.yview)
+        note1.configure(yscrollcommand=note1scroll.set)
 
         note1frame.pack(side=tk.LEFT)
         note2frame = tk.Frame(self)
 
-        note2label = tk.Label(note2frame, text="Note 2").pack(side=tk.TOP)
+        tk.Label(note2frame, text="Note 2").pack(side=tk.TOP)
         note2 = tk.Listbox(note2frame)
 
         for note in self.parent.notes:
@@ -208,7 +217,11 @@ class NoteVariables(tk.Frame):
 
         note2.bind("<<ListboxSelect>>", self.parent.choose_note2)
         note2.pack(side=tk.LEFT)
-        note2scroll = tk.Scrollbar(note2frame, orient=tk.VERTICAL).pack(side=tk.RIGHT, fill=tk.Y)
+        note2scroll = tk.Scrollbar(note2frame, orient=tk.VERTICAL)
+        note2scroll.pack(side=tk.RIGHT, fill=tk.Y)
+
+        note2scroll.configure(command=note2.yview)
+        note2.configure(yscrollcommand=note2scroll.set)
 
         note2frame.pack(side=tk.LEFT)
 
