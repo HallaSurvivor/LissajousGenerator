@@ -23,14 +23,6 @@ import matplotlib
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import pyaudio
-
-volume = 0.5
-fs = 44100
-duration = 1.0
-f = 440.0
-
-
-# The land of please-do-not-touch
 matplotlib.use("TkAgg")
 
 
@@ -42,8 +34,8 @@ class LissajousGenerator(tk.Frame):
     for all the variables (defined below)
 
     Also includes two dropdowns containing notes
-    just tuned to A major. Selecting them will
-    automatically override the settings.
+    just tuned to A major using 7-limit just intonation.
+    Selecting them will automatically override the settings.
 
     A is the Wave1 (W1) amplitude
     B is the Wave2 (W2) amplitude
@@ -74,11 +66,17 @@ class LissajousGenerator(tk.Frame):
         self.delta.set(0)
 
         #Define constants
-        self.notes = ['A4', 'A#4', 'B4', 'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4',
-                      'A5', 'A#5', 'B5', 'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5',
-                      'A6', 'A#6', 'B6', 'C6', 'C#6', 'D6', 'D#6', 'E6', 'F6', 'F#6', 'G6', 'G#6', 'A6']
+        self.notes = ['A4', 'A#4', 'B4', 'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5',
+                      'A5', 'A#5', 'B5', 'C6', 'C#6', 'D6', 'D#6', 'E6', 'F6', 'F#6', 'G6', 'G#6',
+                      'A6', 'A#6', 'B6', 'C7', 'C#7', 'D7', 'D#7', 'E7', 'F7', 'F#7', 'G7', 'G#7']
 
-        self.note_dict = {'A4': 440}
+        self.note_dict = {'A4': 1.0, 'A#4': 16.0/15.0, 'B4': 8.0/7.0, 'C5': 6.0/5.0, 'C#5': 5.0/4.0,
+                          'D5': 4.0/3.0, 'D#5': 10.0/7.0, 'E5': 3.0/2.0, 'F5': 8.0/5.0, 'F#5': 5.0/3.0,
+                          'G5': 7.0/4.0, 'G#5': 15.0/8.0, 'A5': 2.0, 'A#5': 32.0/15.0, 'B5': 16.0/7.0,
+                          'C6': 12.0/5.0, 'C#6': 5.0/2.0, 'D6': 8.0/3.0, 'D#6': 20.0/7.0, 'E6': 3.0,
+                          'F6': 16.0/5.0, 'F#6': 10.0/3.0, 'G6': 7.0/2.0, 'G#6': 15.0/4.0, 'A6': 4.0,
+                          'A#6': 64.0/15.0, 'B6': 32.0/7.0, 'C7': 24.0/5.0, 'C#7': 5.0, 'D7': 16.0/3.0,
+                          'D#7': 40.0/7.0, 'E7': 6.0, 'F7': 32.0/5.0, 'F#7': 20.0/3.0, 'G7': 7.0, 'G#7': 15.0/2.0}
 
         self.initUI()
 
@@ -121,12 +119,16 @@ class LissajousGenerator(tk.Frame):
         idx = sender.curselection()
         self.a.set(self.note_dict[sender.get(idx)])
 
+        self.delta.set(0)
+
     def choose_note2(self, note):
-        self.A.set(5)
+        self.B.set(5)
 
         sender = note.widget
         idx = sender.curselection()
-        self.a.set(self.note_dict[sender.get(idx)])
+        self.b.set(self.note_dict[sender.get(idx)])
+
+        self.delta.set(0)
 
 
 class VariableSliders(tk.Frame):
@@ -228,7 +230,7 @@ class Plot(tk.Frame):
         tk.Frame.__init__(self, parent, background="white")
         self.parent = parent
 
-        T = [float(num)/100.0 for num in range(0, 1001)]
+        T = [float(num)/100.0 for num in range(0, 10001)]
         X = [self.parent.A.get()*np.sin(self.parent.a.get()*t + self.parent.delta.get()) for t in T]
         Y = [self.parent.B.get()*np.sin(self.parent.b.get()*t) for t in T]
 
@@ -246,7 +248,7 @@ class Plot(tk.Frame):
         self.pack()
 
     def refresh(self):
-        T = [float(num)/100.0 for num in range(0, 1001)]
+        T = [float(num)/100.0 for num in range(0, 10001)]
         X = [self.parent.A.get()*np.sin(self.parent.a.get()*t + self.parent.delta.get()) for t in T]
         Y = [self.parent.B.get()*np.sin(self.parent.b.get()*t) for t in T]
 
