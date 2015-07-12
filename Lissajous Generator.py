@@ -246,6 +246,8 @@ class Plot(tk.Frame):
         tk.Frame.__init__(self, parent, background="white")
         self.parent = parent
 
+        tk.Button(self, text='Refresh Image', command=self.refresh).pack(side=tk.TOP)
+
         T = [float(num)/100.0 for num in range(0, 10001)]
         X = [self.parent.A.get()*np.sin(self.parent.a.get()*t + self.parent.delta.get()) for t in T]
         Y = [self.parent.B.get()*np.sin(self.parent.b.get()*t) for t in T]
@@ -257,9 +259,8 @@ class Plot(tk.Frame):
 
         self.canvas = FigureCanvasTkAgg(f, self)
         self.canvas.show()
-        self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        self.canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
-        tk.Button(self, text='Refresh Image', command=self.refresh).pack(side=tk.BOTTOM)
 
         self.pack()
 
