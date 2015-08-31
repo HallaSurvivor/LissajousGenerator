@@ -25,6 +25,7 @@ play tones corresponding to the notes given.
 Thanks to Ella for the idea :)
 
 Made by Christopher Grossack
+Source: https://github.com/HallaSurvivor/LissajousGenerator
 """
 
 import Tkinter as tk
